@@ -2,6 +2,7 @@ import feedparser
 import httpx
 from core.logger import get_logger
 from core.config import RSS_URL
+from typing import List, Dict
 
 log = get_logger(__name__)
 
@@ -19,7 +20,7 @@ def get_image_url(entry) -> str:
     return ""
 
 
-def fetch_entries() -> list[dict]:
+def fetch_entries() -> List[Dict]:
     log.info(f"Fetching from: {RSS_URL}")
     response = httpx.get(RSS_URL, headers=HEADERS, follow_redirects=True)
     log.info(f"HTTP status: {response.status_code}")
