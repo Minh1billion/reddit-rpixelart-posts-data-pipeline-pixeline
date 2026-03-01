@@ -1,0 +1,40 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/app
+
+            echo "Pulling latest code..."
+            git pull origin main
+
+            echo "Writing .env.prod..."
+            cat > .env.prod <<EOF
+            SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+            SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+            RSS_URL=https://www.reddit.com/r/PixelArt/.rss
+            ENV=production
+            AIRFLOW_SECRET_KEY=${{ secrets.AIRFLOW_SECRET_KEY }}
+            EOF
+
+            echo "Rebuilding containers..."
+            docker compose --env-file .env.prod up -d --build
+
+            echo "Deploy done."
