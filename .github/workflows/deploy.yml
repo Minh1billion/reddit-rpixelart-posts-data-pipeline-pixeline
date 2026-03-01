@@ -34,7 +34,16 @@ jobs:
             AIRFLOW_SECRET_KEY=${{ secrets.AIRFLOW_SECRET_KEY }}
             EOF
 
-            echo "Rebuilding containers..."
-            docker compose --env-file .env.prod up -d --build
+            echo "Stopping old containers..."
+            docker-compose --env-file .env.prod down || true
+
+            echo "Building images..."
+            docker-compose --env-file .env.prod build
+
+            echo "Init Airflow DB..."
+            docker-compose --env-file .env.prod run --rm airflow-init
+
+            echo "Starting services..."
+            docker-compose --env-file .env.prod up -d
 
             echo "Deploy done."
