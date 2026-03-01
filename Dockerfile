@@ -12,10 +12,10 @@ RUN pip install --no-cache-dir -r /opt/airflow/requirements.txt
 COPY core/ /opt/airflow/core/
 COPY pipelines/ /opt/airflow/pipelines/
 COPY dags/ /opt/airflow/dags/
-COPY /scripts/entrypoint.sh entrypoint.sh
 
 USER root
-RUN chmod +x entrypoint.sh
+COPY scripts/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 USER airflow
 ENTRYPOINT ["/entrypoint.sh"]
