@@ -11,6 +11,8 @@ x-airflow-common: &airflow-common
     - SUPABASE_URL=${SUPABASE_URL}
     - SUPABASE_KEY=${SUPABASE_KEY}
     - RSS_URL=${RSS_URL:-https://www.reddit.com/r/PixelArt/.rss}
+    - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}          
+    - YOUTUBE_CHANNEL_IDS=${YOUTUBE_CHANNEL_IDS}  
     - ENV=${ENV:-production}
   depends_on:
     postgres:

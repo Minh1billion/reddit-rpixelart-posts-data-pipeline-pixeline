@@ -32,6 +32,8 @@ jobs:
             RSS_URL=https://www.reddit.com/r/PixelArt/.rss
             ENV=production
             AIRFLOW_SECRET_KEY=${{ secrets.AIRFLOW_SECRET_KEY }}
+            YOUTUBE_API_KEY=${{ secrets.YOUTUBE_API_KEY }}
+            YOUTUBE_CHANNEL_IDS=${{ secrets.YOUTUBE_CHANNEL_IDS }}
             EOF
 
             echo "Stopping old containers..."
